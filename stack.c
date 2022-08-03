@@ -101,7 +101,10 @@ void push(struct stack *stk, int data)
         stk -> top = stk -> top + 1;
     }
     else
-        printf("The stack is full we can't push other elements");
+    {    printf("The stack is full we can't push other elements");
+        exit(EXIT_FAILURE);
+    }
+
 }
 
 int pop(struct stack *stk)
@@ -109,12 +112,12 @@ int pop(struct stack *stk)
     int poped = 0;
     if(is_empty(stk) == 0)
     {
-        poped = stk -> elements[stk->top];
-        stk -> top = stk -> top - 1;
-        return poped;
+        return stk -> elements[stk->top--];
     }
     else
-        printf("Stack is empty pop operation not possible");
+    {    printf("Stack is empty pop operation not possible");
+        exit(EXIT_FAILURE);
+    }
 }
 
 int peek(struct stack *stk)
@@ -122,16 +125,25 @@ int peek(struct stack *stk)
     if(is_empty(stk) == 0)
         return stk->elements[stk->top];
     else
-        printf("Stack empty.");
+    {    printf("Stack empty.");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void display_stack(struct stack *stk)
 {
-    int i;
-    printf("[");
-    for(i = stk->top; i >= 0; i--)
+    if(stk->top != -1)
     {
-        printf("%d ", stk->elements[i]);
+        int i;
+        printf("[");
+        for(i = stk->top; i >= 0; i--)
+        {
+            printf("%d ", stk->elements[i]);
+        }
+        printf("]");
     }
-    printf("]");
+    else{
+        printf("Stack empty");
+        exit(EXIT_FAILURE);
+}
 }
