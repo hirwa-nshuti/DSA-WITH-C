@@ -24,7 +24,7 @@ int main()
     scanf("%d", &stack_max_elements);
     struct stack *s = (struct stack*)malloc(sizeof(struct stack));
     initialize(s, stack_max_elements);
-    push(s, 3);
+    push(s, 4);
     push(s, -1);
     int choice;
     do
