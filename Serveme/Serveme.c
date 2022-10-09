@@ -1,3 +1,0 @@
-/*
-The main file for running the Serveme application
-*/
