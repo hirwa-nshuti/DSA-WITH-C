@@ -1,3 +1,19 @@
+/*
+Source code for a singular linked list implemented with operations that can be done on it.
+Operations
+----------
+
+1. DISPLAY CONTENT
+2. INSERT AT THE BEGINNING
+3. INSERT AT THE END
+4. INSERT BEFORE
+5. INSERT AFTER
+6. DELETE AT END
+7. DELETE AT THE BEGINNING
+8. DELETE AFTER
+9. REVERSE THE LIST
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
