@@ -20,7 +20,6 @@ void insert_before();
 void insert_after();
 void delete_at_end();
 void delete_at_beginning();
-void delete_before();
 void delete_after();
 void reversell();
 
@@ -41,9 +40,8 @@ select_option:
     printf("\n5. INSERT AFTER\n");
     printf("\n6. DELETE AT END\n");
     printf("\n7. DELETE AT THE BEGINNING\n");
-    printf("\n8. DELETE BEFORE\n");
-    printf("\n9. DELETE AFTER\n");
-    printf("\n10. REVERSE THE LIST\n");
+    printf("\n8. DELETE AFTER\n");
+    printf("\n9. REVERSE THE LIST\n");
     printf("\n0. EXIT\n");
     printf("----------\n\n");
 
@@ -64,10 +62,8 @@ select_option:
     else if (option == 7)
         delete_at_beginning();
     else if (option == 8)
-        delete_before();
-    else if (option == 9)
         delete_after();
-    else if (option == 10)
+    else if (option == 9)
         reversell();
     else
         goto Thanks;
@@ -283,20 +279,70 @@ void delete_at_beginning()
     free(ptr);
 }
 
-// Deleting before a given node
-void delete_before()
-{
-    return;
-}
-
 // Deleting after a given node
 void delete_after()
 {
-    return;
+    if (head == NULL)
+    {
+        printf("\nLinked List Underflow\n");
+        return;
+    }
+    bool check;
+    Node *ptr = head;
+    Node *curr;
+    int node_data = node_details(false);
+    if(head->next == NULL)
+    {
+        if(head->data == node_data)
+        {
+            head = NULL;
+            return;
+        }
+
+        else
+        {
+            printf("\nCan't delete node data not found\n");
+            return;
+        }
+    }
+    while(ptr->next != NULL)
+    {
+        curr = ptr;
+        ptr = ptr->next;
+        if (ptr -> data == node_data)
+        {
+            check = true;
+            break;
+        }
+    }
+    if (check)
+    {
+        curr = ptr;
+        ptr = ptr->next;
+        curr -> next = ptr -> next;
+        return;
+    }
+    printf("\nNode not found try again\n");    
 }
 
 // Reversing a linked list
 void reversell()
 {
-    return;
+    if (head == NULL)
+    {
+        printf("\nLinked List Underflow\n");
+        return;
+    }
+    Node *ptr = head;
+    Node *prev = NULL;
+    Node *up_next = NULL;
+
+    while(ptr != NULL)
+    {
+        up_next = ptr->next;
+        ptr->next = prev;
+        prev = ptr;
+        ptr = up_next;
+    }
+    head = prev; 
 }
