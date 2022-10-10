@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Node
 {
@@ -13,12 +14,14 @@ int size;
 
 void initialize();
 void display_elements();
-void delete_at_end();
-void delete_at_beginning();
-void delete_at_position();
 void insert_at_end();
 void insert_at_beginning();
-void insert_at_position();
+void insert_before();
+void insert_after();
+void delete_at_end();
+void delete_at_beginning();
+void delete_before();
+void delete_after();
 void reversell();
 
 
@@ -34,13 +37,15 @@ select_option:
     printf("\n1. DISPLAY CONTENT\n");
     printf("\n2. INSERT AT THE BEGINNING\n");
     printf("\n3. INSERT AT THE END\n");
-    printf("\n4. INSERT AT POSITION\n");
-    printf("\n5. DELETE AT END\n");
-    printf("\n6. DELETE AT THE BEGINNING\n");
-    printf("\n7. DELETE AT POSITION\n");
-    printf("\n8. REVERSE THE LIST\n");
-    printf("\n9. EXIT\n");
-    printf("----------\nn");
+    printf("\n4. INSERT BEFORE\n");
+    printf("\n5. INSERT AFTER\n");
+    printf("\n6. DELETE AT END\n");
+    printf("\n7. DELETE AT THE BEGINNING\n");
+    printf("\n8. DELETE BEFORE\n");
+    printf("\n9. DELETE AFTER\n");
+    printf("\n10. REVERSE THE LIST\n");
+    printf("\n0. EXIT\n");
+    printf("----------\n\n");
 
     scanf("%d", &option);
 
@@ -51,15 +56,19 @@ select_option:
     else if (option == 3)
         insert_at_end();
     else if (option == 4)
-        goto select_option;
+        insert_before();
     else if (option == 5)
-        goto select_option;
+        insert_after();
     else if (option == 6)
-        goto select_option;
+        delete_at_end();
     else if (option == 7)
-        goto select_option;
+        delete_at_beginning();
     else if (option == 8)
-        goto select_option;
+        delete_before();
+    else if (option == 9)
+        delete_after();
+    else if (option == 10)
+        reversell();
     else
         goto Thanks;
     goto select_option;
@@ -77,6 +86,21 @@ Node *get_node_data()
     printf("\nEnter the data to the node to insert: ");
     scanf("%d", &(ptr -> data));
     return ptr;
+}
+
+// Getting node details
+int node_details(bool before)
+{
+    int x;
+    if (before == true)
+    {
+        printf("\nEnter the node you want to do operation before: ");
+        scanf("%d", &x);
+        return x;
+    }
+    printf("\nEnter the node you want to do operation after: ");
+    scanf("%d", &x);
+    return x;
 }
 
 // Initializing LL
@@ -126,6 +150,7 @@ void insert_at_end()
 {
     Node *ptr;
     ptr = get_node_data();
+    ptr->next = NULL;
     if (head == NULL)
     {
         head = ptr;
@@ -133,37 +158,144 @@ void insert_at_end()
         return;
     }
     Node *new_node = head;
-    while(new_node != NULL)
+    while(new_node->next != NULL)
     {
-        if (new_node->next == NULL)
-        {
-            new_node -> next = ptr;
-            head = new_node;
-            size += 1;
-            return;
-        }
         new_node = new_node -> next;
     }
+    size += 1;
+    new_node ->next = ptr;
     
 }
 
+// Inserting before a given node
+void insert_before()
+{   
+    if (head == NULL)
+    {
+        printf("\nThe list is empt insert data normaly\n");
+        insert_at_beginning();
+        return;
+    }
+    int node_data = node_details(true);
+    if (node_data == head->data)
+    {
+        insert_at_beginning();
+        return;
+    }
+    bool check = false;
+    Node *ptr = head;
+    Node *curr;
+    while(ptr->next != NULL)
+    {
+        curr = ptr;
+        ptr = ptr->next;
+        if (ptr -> data == node_data)
+        {   
+            check = true;
+            break;
+        }
+    }
+    if (check)
+    {
+        Node *to_insert;
+        to_insert = get_node_data();
+        to_insert ->next = ptr;
+        curr -> next = to_insert;
+        return;
+    }
+    printf("\nNode not found inserting element at the end\n");
+    insert_at_end();
+}
+
+// Inserting after a given node
+void insert_after()
+{
+    if (head == NULL)
+    {
+        printf("\nThe list is empt insert data normaly\n");
+        insert_at_beginning();
+        return;
+    }
+    int node_data = node_details(false);
+    if (node_data == head->data)
+    {
+        insert_at_end();
+        return;
+    }
+    bool check;
+    Node *ptr = head;
+    Node *curr = ptr;
+    while(ptr->next != NULL)
+    {
+        curr = ptr;
+        ptr = ptr->next;
+        if (ptr -> data == node_data)
+        {
+            check = true;
+            break;
+        }
+    }
+    if (check)
+    {
+        Node *to_insert;
+        to_insert = get_node_data();
+        curr = ptr;
+        ptr = ptr -> next;
+        to_insert ->next = ptr;
+        curr -> next = to_insert;
+        return;
+    }
+    printf("\nNode not found inserting element at the end\n");
+    insert_at_end();
+}
+
+// Deleting the last node from the linked list
 void delete_at_end()
 {
-    return;
+    if (head == NULL)
+    {
+        printf("\nLinked List Underflow\n");
+        return;
+    }
+    Node *ptr = head;
+    Node *curr;
+    while(ptr->next != NULL)
+    {
+        curr = ptr;
+        ptr = ptr->next;
+    }
+
+    curr->next = NULL;
+    free(ptr);  
 }
+
+// Deleting node at the beginning of the list
+
 void delete_at_beginning()
 {
-    return;
+    if (head ==NULL)
+    {
+        printf("\nLinked List Underflow\n");
+        return;
+    }
+    Node *ptr = head;
+    head = head->next;
+    free(ptr);
 }
-void delete_at_position()
+
+// Deleting before a given node
+void delete_before()
 {
     return;
 }
 
-void insert_at_position()
+// Deleting after a given node
+void delete_after()
 {
     return;
 }
+
+// Reversing a linked list
 void reversell()
 {
     return;
